@@ -4,7 +4,7 @@ Esta es una aplicación desarrollada en **Streamlit** que utiliza **AWS Rekognit
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - Subir imágenes de personas en formato `.jpg`, `.jpeg` o `.png`
 - Procesamiento en la nube con Rekognition vía API Gateway + Lambda
@@ -17,7 +17,7 @@ Esta es una aplicación desarrollada en **Streamlit** que utiliza **AWS Rekognit
 
 ---
 
-## 🌐 Demo en línea
+## Demo en línea
 
 Puedes probar la aplicación en Streamlit Cloud:  
 🔗 [[https://<tu-usuario>.streamlit.app]()](https://rekogemocionesaws.streamlit.app/)
