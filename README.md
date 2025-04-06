@@ -2,7 +2,10 @@
 
 Esta es una aplicación desarrollada en **Streamlit** que utiliza **AWS Rekognition** para detectar emociones en rostros humanos presentes en imágenes.
 
----
+<p align="center">
+  <img src="captura1.png" width="600" alt="Demo de la app de emociones">
+</p>
+
 
 ## Funcionalidades
 
@@ -20,9 +23,9 @@ Esta es una aplicación desarrollada en **Streamlit** que utiliza **AWS Rekognit
 ## Demo en línea
 
 Puedes probar la aplicación en Streamlit Cloud:  
-🔗 [[https://<tu-usuario>.streamlit.app]()](https://rekogemocionesaws.streamlit.app/)
+🔗 [https://rekogemocionesaws.streamlit.app](https://rekogemocionesaws.streamlit.app)
 
-> *Reemplaza el enlace anterior con tu URL real cuando la tengas desplegada.*
+
 
 ---
 
