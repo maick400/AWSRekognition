@@ -1,4 +1,4 @@
-# 🧠 Detector de Emociones en Imágenes
+# Detector de Emociones en Imágenes
 
 Esta es una aplicación desarrollada en **Streamlit** que utiliza **AWS Rekognition** para detectar emociones en rostros humanos presentes en imágenes.
 
