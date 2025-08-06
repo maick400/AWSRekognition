@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 import json
 
-API_URL = "https://xwsh8degbh.execute-api.us-east-1.amazonaws.com/prod/"
+API_URL = "https://237tpu69xh.execute-api.us-east-1.amazonaws.com/default/objectde"
 
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Detector de emociones</h1>", unsafe_allow_html=True)
