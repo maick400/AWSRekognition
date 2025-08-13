@@ -1,50 +1,66 @@
 import streamlit as st
 import requests
-import pandas as pd
+import base64
 import json
 
-API_URL = "https://42qpyo5bh1.execute-api.us-east-1.amazonaws.com/default/functionRecognition"
+st.set_page_config(page_title="Texto <-> Audio", layout="wide")
+st.title("🎤 Conversión de Texto ↔ Audio")
 
-st.set_page_config(layout="wide")
-st.markdown("<h1 style='text-align: center;'>Detector de emociones</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center;'>Detecta emociones en imágenes de personas</h2>", unsafe_allow_html=True)
+# URL de tu API
+API_TEXTO_A_AUDIO = "https://xtix8s42ng.execute-api.us-east-1.amazonaws.com/default/Trancripcion"
 
-if "historial" not in st.session_state:
-    st.session_state.historial = []
+col1, col2 = st.columns(2)
 
-col1, col2 = st.columns([1, 1])
+# -------------------
+# COLUMNA 1: Texto -> Audio
+# -------------------
 with col1:
-    uploaded_file = st.file_uploader("📤 Sube una imagen", type=["jpg", "jpeg", "png"])
-    if uploaded_file:
-        st.image(uploaded_file, caption="Imagen cargada", width=300)
-        image_bytes = uploaded_file.read()
-        try:
-            with st.spinner("🔄 Procesando imagen..."):
-                response = requests.post(API_URL, data=image_bytes, headers={"Content-Type": "application/octet-stream"})
-                data = response.json()
-            if response.status_code != 200:
-                st.error(f"❌ Error: {data['error']}")
-                st.stop()
+    st.header("📝 Texto → 🔊 Audio")
+    texto = st.text_area("Escribe el texto a convertir", height=150)
+    if st.button("Generar Audio"):
+        if texto.strip():
+            # Ejemplo de envío de texto a la API
+            response = requests.post(API_TEXTO_A_AUDIO, json={"mode" : "text-to-audio", "text": texto})
+            print (response)
+            if response.status_code == 200:
+                audio_base64 = response.json().get("audio_base64")
+                print(audio_base64)
+                
+                if audio_base64:
+                    audio_bytes = base64.b64decode(audio_base64)
+                    st.audio(audio_bytes, format="audio/mp3")
+                else:
+                    st.error("No se recibió audio de la API.")
             else:
-                st.session_state.historial.append({
-                    "url": data["image_url"],
-                    "emocion": data["emocion"],
-                    "porcentaje": data["porcentaje"],
-                    "emoji": data["emoji"]
-                })
-                st.success("✅ Emoción detectada:")
-        
-        except Exception as e:
-            st.error(f"❌ Error: {str(e)}")
+                st.error(f"Error en la API: {response.status_code}")
+        else:
+            st.warning("Por favor ingresa un texto.")
 
+# -------------------
+# COLUMNA 2: Audio -> Texto
+# -------------------
 with col2:
-    st.subheader("📊 Resultados anteriores:")
-    if st.session_state.historial:
-        for i, item in enumerate(reversed(st.session_state.historial), 1):
-            st.markdown(f"### 📷 Imagen #{len(st.session_state.historial) - i + 1}")
-            st.image(item["url"], width=300, caption="Miniatura procesada")
-            st.write(f"🎭 **Emoción detectada:** {item['emocion']} {item['emoji']}")
-            st.write(f"📊 **Confianza:** {item['porcentaje']}%")
-            st.markdown(f"[🔗 Ver imagen en tamaño completo]({item['url']})", unsafe_allow_html=True)
-            st.markdown("---")
+    st.header("🔊 Audio → 📝 Texto")
+    audio_file = st.file_uploader("Sube un archivo de audio", type=["mp3", "wav", "m4a"])
+    if st.button("Transcribir Audio"):
+        if audio_file is not None:
+            # Convertir el archivo a Base64
+            audio_base64 = base64.b64encode(audio_file.read()).decode("utf-8")
 
+            # Enviar a la API
+            response = requests.post(
+                API_TEXTO_A_AUDIO,
+                json={"mode": "audio-to-text", "audio_base64": audio_base64}
+            )
+
+            if response.status_code == 200:
+                transcripcion = response.json().get("texto")
+                if transcripcion:
+                    st.success("Texto transcrito:")
+                    st.write(transcripcion)
+                else:
+                    st.error("No se recibió texto de la API.")
+            else:
+                st.error(f"Error en la API: {response.status_code}")
+        else:
+            st.warning("Por favor sube un archivo de audio.")
