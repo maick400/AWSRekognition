@@ -16,6 +16,7 @@ col1, col2 = st.columns(2)
 # -------------------
 with col1:
     st.header("📝 Texto → 🔊 Audio")
+    
     texto = st.text_area("Escribe el texto a convertir", height=150)
     if st.button("Generar Audio"):
         if texto.strip():
